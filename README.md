@@ -14,7 +14,7 @@
 
 为了解决下面的问题, 我对使用过的中转站做一个评价
 
-## OpenRouter,ai
+## OpenRouter.ai
 OpenRouter在所有的网站里, 体验是最好的. 
 一个API可以使用多个模型,  最新的GPT API, Anthropic API, Gemini , 国内的DeepSeek, Kimi, MiniMax都可以第一时间使用.
 
