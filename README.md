@@ -39,7 +39,7 @@ codesome的站长是一个技术男,联系他微信可以给你10美元的试用
 
 这个站相对来说比较新, 长期稳定性还等待观察.
 
-## [OhMyGPT](https://x.dogenet.win/i/034RZ3DS)
+## [OhMyGPT](https://x.dogenet.win/i/034RZ3DS){:target="_blank"} 
 OhMyGPT顾名思义之前是一个做gpt起家的中转站, 现在市面上主流的模型, claude, gemini, gpt, minimax这些都能支持. 
 他们的优点是很多区域都有CDN,网络延时可以保证.
 
