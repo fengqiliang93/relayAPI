@@ -204,7 +204,7 @@ Claude code这部分的AI主要是逆向的, 价格是Opus 4.6 是4.75/23.75 一
 
 只支持QQ邮箱注册. 挺搞的
 
-### 十一. [云雾AI](https://yunwu.ai/register?aff=)
+### 十一. [云雾AI](https://yunwu.ai/register?aff=h4RW)
 这也是一个老牌的中转站
 
 优点是, 支持的模型很多, Claude, GPT, Gemini, DeepSeek这些常用的, Qwen, Doubao, Midjourney, Kling, Minimax, 文心一言, 这些都支持.
