@@ -1,11 +1,36 @@
 import type { I18nMessages } from "@/i18n/types";
 
 export const en: I18nMessages = {
-  appTitle: "API Verity Lab",
+  seoTitle: "API Relay Verifier | Check Claude and OpenAI Relay Endpoints",
+  seoDescription:
+    "Verify whether an API relay endpoint is trustworthy by checking protocol consistency, knowledge behavior, identity signals, and signature fingerprints before you integrate it.",
+  seoOgTitle: "API Relay Verifier | Check Claude and OpenAI Relay Endpoints",
+  seoOgDescription:
+    "Quickly evaluate API relay services for protocol mismatch, identity issues, suspicious knowledge behavior, and missing signature traces.",
+  appTitle: "Hvoy API Verity Lab",
   appSubtitle: "Stop the Bait-and-Switch. Verify the Truth.",
   securityNotice:
     "For account safety, use a test API key whenever possible. This tool is open-source on GitHub and runs with client-side logic only. Your API key is not uploaded or stored, and history stays in your browser.",
   configSectionTitle: "API Configuration",
+  introSectionTitle: "What This API Relay Check Does",
+  introSectionBody1:
+    "This page helps you quickly judge whether an API relay is forwarding a real upstream model reliably or whether it shows signs of wrapping, impersonation, protocol mismatch, or watered-down capability. We send controlled probe requests and compare response structure, knowledge behavior, identity consistency, thinking traces, and signature fingerprints.",
+  introSectionBody2:
+    "It is not a formal audit and it does not guarantee perfect accuracy, but it gives you a low-cost technical sanity check before you buy, integrate, or rely on a relay service for production traffic.",
+  faqSectionTitle: "FAQ",
+  faqQuestion1: "What is an API relay service?",
+  faqAnswer1:
+    "An API relay sits between you and an upstream model provider. It forwards requests, normalizes billing, switches providers, or wraps multiple model backends behind one interface. That can be convenient, but it also means you are no longer talking directly to the original model vendor.",
+  faqQuestion2: "What risks can an API relay introduce?",
+  faqAnswer2:
+    "Common risks include protocol mismatches, identity substitution, abnormal knowledge behavior, modified responses, unclear logging or key handling, and uptime that depends on a hidden upstream. Some services also market one model name while routing traffic to a weaker or different backend.",
+  faqQuestion3: "How do we detect suspicious relays?",
+  faqAnswer3:
+    "We send structured probe requests and score the results across protocol consistency, response structure, knowledge answers, identity consistency, thinking traces, and signature fingerprints. Instead of trusting a single field, the tool cross-checks multiple technical signals to surface suspicious relay behavior faster.",
+  faqQuestion4: "Any recommended relay services?",
+  faqAnswer4:
+    "I have tried many relay services recently and recorded my usage notes in this document. You can refer to",
+  faqAnswer4LinkLabel: "the API review document",
 
   validationEndpointRequired: "Please enter an API endpoint URL",
   validationApiKeyRequired: "Please enter your API key",
@@ -33,6 +58,7 @@ export const en: I18nMessages = {
   historyEmptyTitle: "System Ready",
   historyEmptyDescription: "Detection results will appear here",
   historyExport: "Export",
+  historyClear: "Clear Cache",
   historyTimestamp: "Timestamp",
   historyModel: "Model",
   historyEndpoint: "Endpoint",
@@ -41,6 +67,7 @@ export const en: I18nMessages = {
 
   toastViewingReport: "Viewing report",
   toastExportComingSoon: "Export coming soon",
+  toastHistoryCleared: "History cache cleared",
 
   verifyModalTitle: "Complete Human Verification",
   verifyModalDescription: "Detection will start automatically once verification succeeds.",

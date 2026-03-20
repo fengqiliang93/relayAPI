@@ -30,22 +30,21 @@ function normalizeLanguage(input: string | null | undefined): Language | null {
   return null;
 }
 
-function getInitialLanguage(): Language {
-  if (typeof window === "undefined") return "zh";
-  const saved = normalizeLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY));
-  if (saved) return saved;
-
-  const browser = normalizeLanguage(window.navigator.language);
-  return browser ?? "zh";
-}
-
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>(() => getInitialLanguage());
+  const [lang, setLangState] = useState<Language>("zh");
 
   const setLang = useCallback((nextLang: Language) => {
     setLangState(nextLang);
     if (typeof window !== "undefined") {
       window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = normalizeLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY));
+    if (saved) {
+      setLangState(saved);
     }
   }, []);
 

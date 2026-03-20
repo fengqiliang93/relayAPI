@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "github-markdown-css/github-markdown-light.css";
 
 @tailwind base;
 @tailwind components;
@@ -83,6 +84,125 @@
 
   .tracking-tight {
     letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .api-doc-content {
+    @apply text-sm sm:text-base;
+  }
+
+  .markdown-body.api-doc-content {
+    @apply bg-transparent text-muted-foreground;
+    color: hsl(var(--muted-foreground));
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.85;
+  }
+
+  .markdown-body.api-doc-content h1,
+  .markdown-body.api-doc-content h2 {
+    @apply font-semibold tracking-tight;
+    color: hsl(var(--primary));
+  }
+
+  .markdown-body.api-doc-content h3,
+  .markdown-body.api-doc-content h4,
+  .markdown-body.api-doc-content h5,
+  .markdown-body.api-doc-content h6 {
+    @apply font-semibold tracking-tight text-foreground;
+  }
+
+  .markdown-body.api-doc-content h1 {
+    @apply text-4xl sm:text-5xl leading-tight mt-0 mb-8 pb-4;
+    border-bottom-color: hsl(var(--border));
+  }
+
+  .markdown-body.api-doc-content h2 {
+    @apply text-3xl sm:text-4xl mt-12 mb-6 pb-3;
+    border-bottom-color: hsl(var(--border));
+  }
+
+  .markdown-body.api-doc-content h3 {
+    @apply text-2xl sm:text-3xl mt-10 mb-5;
+  }
+
+  .markdown-body.api-doc-content h4 {
+    @apply text-xl sm:text-2xl mt-8 mb-4;
+  }
+
+  .markdown-body.api-doc-content h5 {
+    @apply text-lg sm:text-xl mt-7 mb-3;
+  }
+
+  .markdown-body.api-doc-content h6 {
+    @apply text-base sm:text-lg mt-6 mb-3;
+  }
+
+  .markdown-body.api-doc-content p,
+  .markdown-body.api-doc-content ul,
+  .markdown-body.api-doc-content ol,
+  .markdown-body.api-doc-content blockquote,
+  .markdown-body.api-doc-content pre,
+  .markdown-body.api-doc-content table {
+    @apply my-5;
+  }
+
+  .markdown-body.api-doc-content p,
+  .markdown-body.api-doc-content li {
+    color: hsl(var(--muted-foreground));
+    line-height: 1.9;
+  }
+
+  .markdown-body.api-doc-content strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .markdown-body.api-doc-content a {
+    @apply font-medium underline underline-offset-4 break-words transition-opacity hover:opacity-80;
+    color: hsl(var(--primary));
+  }
+
+  .markdown-body.api-doc-content ul,
+  .markdown-body.api-doc-content ol {
+    @apply pl-6;
+  }
+
+  .markdown-body.api-doc-content li + li {
+    @apply mt-2;
+  }
+
+  .markdown-body.api-doc-content li::marker {
+    color: hsl(var(--primary));
+  }
+
+  .markdown-body.api-doc-content blockquote {
+    @apply rounded-r-xl border-l-4 border-primary/35 bg-primary/5 px-4 py-3 text-foreground;
+  }
+
+  .markdown-body.api-doc-content hr {
+    @apply my-10;
+    background-color: hsl(var(--border));
+  }
+
+  .markdown-body.api-doc-content img {
+    @apply w-full rounded-2xl border border-border bg-background object-cover shadow-sm;
+  }
+
+  .markdown-body.api-doc-content code {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[0.9em] text-foreground;
+  }
+
+  .markdown-body.api-doc-content pre {
+    @apply overflow-x-auto rounded-2xl border border-border bg-foreground px-4 py-3 text-sm text-background;
+  }
+
+  .markdown-body.api-doc-content pre code {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .markdown-body.api-doc-content table th,
+  .markdown-body.api-doc-content table td {
+    border-color: hsl(var(--border));
   }
 }
 

@@ -1,0 +1,18 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F4F5F6"/>
+  <rect x="64" y="64" width="1072" height="502" rx="24" fill="white" stroke="#E5E7EB"/>
+  <rect x="96" y="104" width="180" height="12" rx="6" fill="#00112C" fill-opacity="0.12"/>
+  <rect x="96" y="140" width="460" height="28" rx="8" fill="#00112C" fill-opacity="0.08"/>
+  <rect x="96" y="188" width="820" height="18" rx="9" fill="#00112C" fill-opacity="0.08"/>
+  <rect x="96" y="218" width="760" height="18" rx="9" fill="#00112C" fill-opacity="0.06"/>
+  <rect x="96" y="286" width="312" height="180" rx="18" fill="#F8FAFC" stroke="#E5E7EB"/>
+  <rect x="444" y="286" width="596" height="180" rx="18" fill="#F8FAFC" stroke="#E5E7EB"/>
+  <circle cx="252" cy="376" r="66" fill="#00112C"/>
+  <text x="252" y="389" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="white">88%</text>
+  <rect x="484" y="322" width="180" height="14" rx="7" fill="#00112C" fill-opacity="0.12"/>
+  <rect x="484" y="358" width="252" height="14" rx="7" fill="#00112C" fill-opacity="0.08"/>
+  <rect x="484" y="394" width="216" height="14" rx="7" fill="#00112C" fill-opacity="0.08"/>
+  <rect x="484" y="430" width="194" height="14" rx="7" fill="#00112C" fill-opacity="0.08"/>
+  <text x="96" y="528" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#00112C">API中转站鉴定所</text>
+  <text x="96" y="566" font-family="Arial, sans-serif" font-size="24" fill="#334155">Check Claude / OpenAI relay endpoints for mismatch and spoofing</text>
+</svg>

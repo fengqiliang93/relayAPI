@@ -1,10 +1,28 @@
 export type Language = "zh" | "en";
 
 export interface I18nMessages {
+  seoTitle: string;
+  seoDescription: string;
+  seoOgTitle: string;
+  seoOgDescription: string;
+
   appTitle: string;
   appSubtitle: string;
   securityNotice: string;
   configSectionTitle: string;
+  introSectionTitle: string;
+  introSectionBody1: string;
+  introSectionBody2: string;
+  faqSectionTitle: string;
+  faqQuestion1: string;
+  faqAnswer1: string;
+  faqQuestion2: string;
+  faqAnswer2: string;
+  faqQuestion3: string;
+  faqAnswer3: string;
+  faqQuestion4: string;
+  faqAnswer4: string;
+  faqAnswer4LinkLabel: string;
 
   validationEndpointRequired: string;
   validationApiKeyRequired: string;
@@ -32,6 +50,7 @@ export interface I18nMessages {
   historyEmptyTitle: string;
   historyEmptyDescription: string;
   historyExport: string;
+  historyClear: string;
   historyTimestamp: string;
   historyModel: string;
   historyEndpoint: string;
@@ -40,6 +59,7 @@ export interface I18nMessages {
 
   toastViewingReport: string;
   toastExportComingSoon: string;
+  toastHistoryCleared: string;
 
   verifyModalTitle: string;
   verifyModalDescription: string;

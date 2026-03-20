@@ -6,7 +6,7 @@ export function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer className="border-t border-border bg-card mt-12">
+    <footer className="mt-12 border-t border-border">
       <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <Logo size={20} />

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Zap, Info, AlertTriangle } from "lucide-react";
+import { Zap, Info, AlertTriangle } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Footer } from "@/components/Footer";
 import { ApiConfig } from "@/components/ApiConfig";
@@ -132,6 +132,10 @@ const CLAUDE_CODE_USER_ID =
   "user_82a10c807646e5141d2ffcbf5c6d439ee4cfd99d1903617b7b69e3a5c03b1dbf_account__session_74673a26-ea49-47f4-a8ed-27f9248f231f";
 const PROBE_MAX_TOKENS = 2048;
 const PROBE_THINKING_BUDGET = 1024;
+const HISTORY_STORAGE_KEY = "api-verifier-history-v1";
+const HISTORY_LIMIT = 10;
+const SITE_URL = "https://www.hvoy.ai/";
+const OG_IMAGE_URL = "https://www.hvoy.ai/og-image.svg";
 
 function resolveEndpoint(rawUrl: string): { endpoint: string; mode: EndpointMode } {
   const trimmed = rawUrl.trim();
@@ -626,6 +630,137 @@ function buildChecks(options: {
   return { checks, score: Math.max(0, Math.min(100, score)) };
 }
 
+function formatHistoryTimestamp(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function isCheckStatus(value: unknown): value is CheckItem["status"] {
+  return value === "pass" || value === "fail" || value === "warning";
+}
+
+function sanitizeHistoryEntry(value: unknown): HistoryEntry | null {
+  if (!value || typeof value !== "object") return null;
+
+  const entry = value as Record<string, unknown>;
+  const checks = Array.isArray(entry.checks)
+    ? entry.checks
+        .map((item): CheckItem | null => {
+          if (!item || typeof item !== "object") return null;
+          const check = item as Record<string, unknown>;
+          if (
+            typeof check.name !== "string" ||
+            !isCheckStatus(check.status) ||
+            typeof check.detail !== "string"
+          ) {
+            return null;
+          }
+
+          return {
+            name: check.name,
+            status: check.status,
+            detail: check.detail,
+          };
+        })
+        .filter((item): item is CheckItem => item !== null)
+    : undefined;
+
+  if (
+    typeof entry.id !== "string" ||
+    typeof entry.timestamp !== "string" ||
+    typeof entry.model !== "string" ||
+    typeof entry.endpoint !== "string" ||
+    typeof entry.score !== "number" ||
+    (entry.status !== "pass" && entry.status !== "fail")
+  ) {
+    return null;
+  }
+
+  return {
+    id: entry.id,
+    timestamp: entry.timestamp,
+    model: entry.model,
+    endpoint: entry.endpoint,
+    apiKey: "",
+    score: entry.score,
+    status: entry.status,
+    checks,
+    latency: typeof entry.latency === "number" ? entry.latency : undefined,
+    tps: typeof entry.tps === "number" ? entry.tps : undefined,
+    inputTokens: typeof entry.inputTokens === "number" ? entry.inputTokens : undefined,
+    outputTokens: typeof entry.outputTokens === "number" ? entry.outputTokens : undefined,
+  };
+}
+
+function loadHistoryFromStorage(): HistoryEntry[] {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (!raw) return [];
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .map((entry) => sanitizeHistoryEntry(entry))
+      .filter((entry): entry is HistoryEntry => entry !== null)
+      .slice(0, HISTORY_LIMIT);
+  } catch {
+    return [];
+  }
+}
+
+function saveHistoryToStorage(entries: HistoryEntry[]) {
+  if (typeof window === "undefined") return;
+
+  const sanitized = entries
+    .map((entry) => sanitizeHistoryEntry(entry))
+    .filter((entry): entry is HistoryEntry => entry !== null)
+    .slice(0, HISTORY_LIMIT);
+
+  window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(sanitized));
+}
+
+function clearHistoryStorage() {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(HISTORY_STORAGE_KEY);
+}
+
+function upsertMetaTag(selector: string, attributes: Record<string, string>) {
+  if (typeof document === "undefined") return;
+
+  let element = document.head.querySelector(selector) as HTMLMetaElement | null;
+  if (!element) {
+    element = document.createElement("meta");
+    document.head.appendChild(element);
+  }
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    element?.setAttribute(key, value);
+  });
+}
+
+function upsertLinkTag(selector: string, attributes: Record<string, string>) {
+  if (typeof document === "undefined") return;
+
+  let element = document.head.querySelector(selector) as HTMLLinkElement | null;
+  if (!element) {
+    element = document.createElement("link");
+    document.head.appendChild(element);
+  }
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    element?.setAttribute(key, value);
+  });
+}
+
 function isUnknownResponse(text: string): boolean {
   const normalized = text.trim();
   if (!normalized) return true;
@@ -650,6 +785,7 @@ const Index = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<DetectionResult | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [historyReady, setHistoryReady] = useState(false);
   const [showTurnstileModal, setShowTurnstileModal] = useState(false);
   const [turnstileVerified, setTurnstileVerified] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -672,6 +808,33 @@ const Index = () => {
       turnstileContainerRef.current.innerHTML = "";
     }
   }, []);
+
+  useEffect(() => {
+    setHistory(loadHistoryFromStorage());
+    setHistoryReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!historyReady) return;
+    saveHistoryToStorage(history);
+  }, [history, historyReady]);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    document.title = messages.seoTitle;
+    upsertMetaTag('meta[name="description"]', { name: "description", content: messages.seoDescription });
+    upsertMetaTag('meta[property="og:title"]', { property: "og:title", content: messages.seoOgTitle });
+    upsertMetaTag('meta[property="og:description"]', { property: "og:description", content: messages.seoOgDescription });
+    upsertMetaTag('meta[property="og:type"]', { property: "og:type", content: "website" });
+    upsertMetaTag('meta[property="og:url"]', { property: "og:url", content: SITE_URL });
+    upsertMetaTag('meta[property="og:image"]', { property: "og:image", content: OG_IMAGE_URL });
+    upsertMetaTag('meta[name="twitter:card"]', { name: "twitter:card", content: "summary_large_image" });
+    upsertMetaTag('meta[name="twitter:title"]', { name: "twitter:title", content: messages.seoOgTitle });
+    upsertMetaTag('meta[name="twitter:description"]', { name: "twitter:description", content: messages.seoOgDescription });
+    upsertMetaTag('meta[name="twitter:image"]', { name: "twitter:image", content: OG_IMAGE_URL });
+    upsertLinkTag('link[rel="canonical"]', { rel: "canonical", href: SITE_URL });
+  }, [messages]);
 
   useEffect(() => {
     if (!TURNSTILE_SITE_KEY) return;
@@ -793,7 +956,7 @@ const Index = () => {
 
       const modelName = selectedModel === "claude-opus-4-6" ? "Opus 4.6" : "Sonnet 4.6";
       const now = new Date();
-      const timestamp = `${now.getMonth() + 1}/${now.getDate()}, ${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
+      const timestamp = formatHistoryTimestamp(now);
 
       setHistory((prev) => [
         {
@@ -801,12 +964,17 @@ const Index = () => {
           timestamp,
           model: modelName,
           endpoint: url,
-          apiKey,
+          apiKey: "",
           score,
           status: score >= 70 ? "pass" : "fail",
+          checks,
+          latency: avgLatency,
+          tps: avgTps,
+          inputTokens: inputTokenSum,
+          outputTokens: outputTokenSum,
         },
         ...prev,
-      ]);
+      ].slice(0, HISTORY_LIMIT));
 
       setPublicError(null);
       toast.success(t("detectionComplete"));
@@ -845,6 +1013,12 @@ const Index = () => {
     setShowTurnstileModal(false);
     resetTurnstile();
   }, [resetTurnstile]);
+
+  const clearHistory = useCallback(() => {
+    clearHistoryStorage();
+    setHistory([]);
+    toast.success(t("toastHistoryCleared"));
+  }, [t]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -887,11 +1061,8 @@ const Index = () => {
         </div>
 
         {/* Config Section */}
-        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 mb-4">
+        <div className="p-1 sm:p-0 mb-4">
           <div className="flex items-center gap-2 mb-5">
-            <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
-              <span className="text-sm">📋</span>
-            </div>
             <h2 className="text-lg font-semibold tracking-tight text-foreground">
               {t("configSectionTitle")}
             </h2>
@@ -909,7 +1080,6 @@ const Index = () => {
             disabled={isScanning}
             className="w-full sm:w-auto justify-center flex items-center gap-2 bg-primary hover:bg-primary-hover text-primary-foreground px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Shield className="w-4 h-4" />
             {isScanning
               ? t("actionScanning")
               : t("actionStartDetection")}
@@ -943,7 +1113,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
-              className="relative rounded-xl border border-border bg-card p-4 sm:p-6 mb-4"
+              className="relative p-1 sm:p-0 mb-4"
             >
               <ScanningOverlay isScanning={isScanning} />
 
@@ -980,9 +1150,55 @@ const Index = () => {
         {/* History Section */}
         <HistoryLog
           entries={history}
-          onSelect={(entry) => toast.info(`${t("toastViewingReport")} ${entry.id}`)}
-          onExport={() => toast.success(t("toastExportComingSoon"))}
+          onClear={clearHistory}
         />
+
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">
+            {t("faqSectionTitle")}
+          </h2>
+          <div className="mt-4 divide-y divide-border">
+            {[
+              {
+                question: t("introSectionTitle"),
+                answer: `${t("introSectionBody1")}\n\n${t("introSectionBody2")}`,
+              },
+              { question: t("faqQuestion1"), answer: t("faqAnswer1") },
+              { question: t("faqQuestion2"), answer: t("faqAnswer2") },
+              { question: t("faqQuestion3"), answer: t("faqAnswer3") },
+              {
+                question: t("faqQuestion4"),
+                answer: t("faqAnswer4"),
+                link: {
+                  href: "/APIreview.html",
+                  label: t("faqAnswer4LinkLabel"),
+                },
+              },
+            ].map((item) => (
+              <div key={item.question} className="py-4 first:pt-0 last:pb-0">
+                <h3 className="text-sm font-medium text-foreground">
+                  {item.question}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                  {item.answer}
+                  {item.link && (
+                    <>
+                      {" "}
+                      <a
+                        href={item.link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary font-medium underline underline-offset-4 hover:opacity-80 transition-opacity"
+                      >
+                        {item.link.label}
+                      </a>
+                    </>
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
       <AnimatePresence>
         {showTurnstileModal && (
