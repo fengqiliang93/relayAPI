@@ -20,7 +20,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
 
-
 DEFAULT_CONFIG = {
     "max_tokens": 32000,
     "thinking_budget": 31999,
@@ -29,6 +28,11 @@ DEFAULT_CONFIG = {
 DEFAULT_DETECTION_MESSAGE = "你的知识库截止时间是什么时候? 请一定要诚实回答"
 CORE_PROMPT_SYMBOL = '输出中文的这个符号”"'
 CORE_PROMPT_TARIFF = "不允许上网查, 2025年3月4日特朗普把关税提到多少. 不知道就回答不知道."
+DEFAULT_METADATA_USER_ID = (
+    "user_82a10c807646e5141d2ffcbf5c6d439ee4cfd99d1903617b7b69e3a5c03b1dbf_"
+    "account__session_74673a26-ea49-47f4-a8ed-27f9248f231f"
+)
+OFFICIAL_CLAUDE_CODE_SYSTEM_PROMPT = "You are Claude Code, Anthropic's official CLI for Claude."
 
 UNKNOWN_PATTERNS = [
     r"不知道",
@@ -125,35 +129,23 @@ def get_headers(api_key: str) -> Dict[str, str]:
     """
     return {
         "accept": "application/json",
-        "anthropic-beta": "claude-code-20250219,interleaved-thinking-2025-05-14",
+        "anthropic-beta": "oauth-2025-04-20,interleaved-thinking-2025-05-14",
         "anthropic-dangerous-direct-browser-access": "true",
         "anthropic-version": "2023-06-01",
         "authorization": f"Bearer {api_key}",
         "content-type": "application/json",
-        "user-agent": "claude-cli/2.0.76 (external, cli)",
+        "user-agent": "claude-cli/2.1.76 (external, cli)",
         "x-app": "cli",
-        "x-stainless-arch": "x64",
-        "x-stainless-helper-method": "stream",
-        "x-stainless-lang": "js",
-        "x-stainless-os": "Windows",
-        "x-stainless-package-version": "0.70.0",
-        "x-stainless-retry-count": "0",
-        "x-stainless-runtime": "node",
-        "x-stainless-runtime-version": "v25.1.0",
-        "x-stainless-timeout": "600",
         "accept-encoding": "identity",
     }
 
 
 def _build_user_content(message: str) -> List[Dict[str, object]]:
     return [
-        {"type": "text", "text": "null"},
-        {"type": "text", "text": "null"},
         {
             "type": "text",
             "text": message,
-            "cache_control": {"type": "ephemeral"},
-        },
+        }
     ]
 
 
@@ -169,22 +161,17 @@ def build_body_from_messages(
     body: Dict[str, object] = {
         "model": model_id,
         "messages": messages,
-        "metadata": {
-            "user_id": (
-                "user_82a10c807646e5141d2ffcbf5c6d439ee4cfd99d1903617b7b69e3a5c03b1dbf_"
-                "account__session_74673a26-ea49-47f4-a8ed-27f9248f231f"
-            )
-        },
+        "metadata": {"user_id": DEFAULT_METADATA_USER_ID},
         "max_tokens": DEFAULT_CONFIG["max_tokens"],
         "stream": True,
+        "tools": [],
     }
 
     if with_system:
         body["system"] = [
             {
                 "type": "text",
-                "text": "null",
-                "cache_control": {"type": "ephemeral"},
+                "text": OFFICIAL_CLAUDE_CODE_SYSTEM_PROMPT,
             }
         ]
 
@@ -258,7 +245,9 @@ def fingerprint_report(request_input: Dict[str, object]) -> Dict[str, Any]:
             "user_agent_claude_cli": has_header("user-agent", r"claude-cli"),
             "x_app_cli": has_header("x-app", r"^cli$"),
             "anthropic_version": has_header("anthropic-version", r"2023-06-01"),
+            "anthropic_beta_present": has_header("anthropic-beta"),
             "anthropic_beta_claude_code": has_header("anthropic-beta", r"claude-code-"),
+            "anthropic_beta_oauth": has_header("anthropic-beta", r"oauth-"),
             "anthropic_dangerous_browser_access": has_header(
                 "anthropic-dangerous-direct-browser-access", r"true"
             ),
@@ -279,6 +268,15 @@ def fingerprint_report(request_input: Dict[str, object]) -> Dict[str, Any]:
                 and isinstance(body.get("metadata", {}).get("user_id"), str)
             ),
             "messages_is_list": isinstance(body.get("messages"), list),
+            "has_tools_list": isinstance(body.get("tools"), list),
+            "official_cli_system_prompt": (
+                isinstance(body.get("system"), list)
+                and any(
+                    isinstance(block, dict)
+                    and OFFICIAL_CLAUDE_CODE_SYSTEM_PROMPT in str(block.get("text", ""))
+                    for block in body.get("system", [])
+                )
+            ),
         },
     }
     return report
@@ -311,7 +309,12 @@ def send_request_and_collect(
 
     headers = get_headers(api_key)
     if messages_override is None:
-        body = build_body(message, model_id, with_thinking=with_thinking, with_system=with_system)
+        body = build_body(
+            message,
+            model_id,
+            with_thinking=with_thinking,
+            with_system=with_system,
+        )
     else:
         body = build_body_from_messages(
             messages=messages_override,
@@ -343,7 +346,7 @@ def send_request_and_collect(
             url,
             headers=headers,
             json=body,
-            params={"beta": "true"},
+            params=None,
         ) as response:
             if response.status_code != 200:
                 raw = response.read().decode("utf-8", errors="ignore")
@@ -837,11 +840,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--timeout", type=float, default=120.0, help="Request timeout in seconds")
     parser.add_argument(
-        "--no-thinking",
-        action="store_true",
-        help="Disable thinking in request",
-    )
-    parser.add_argument(
         "--no-system",
         action="store_true",
         help="Do not send system field",
@@ -872,7 +870,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     script_start_time = time.perf_counter()
     args = parse_args()
-    with_thinking = not args.no_thinking
+    with_thinking = True
     with_system = not args.no_system
 
     if args.core_two_step:

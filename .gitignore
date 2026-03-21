@@ -34,3 +34,5 @@ test-results/
 .eslintcache
 
 __pycache__/
+
+ scripts/

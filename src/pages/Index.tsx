@@ -130,8 +130,9 @@ const REFUSAL_PATTERNS = [
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 const CLAUDE_CODE_USER_ID =
   "user_82a10c807646e5141d2ffcbf5c6d439ee4cfd99d1903617b7b69e3a5c03b1dbf_account__session_74673a26-ea49-47f4-a8ed-27f9248f231f";
-const PROBE_MAX_TOKENS = 2048;
-const PROBE_THINKING_BUDGET = 1024;
+const PROBE_MAX_TOKENS = 32000;
+const PROBE_THINKING_BUDGET = 31999;
+const OFFICIAL_CLAUDE_CODE_SYSTEM_PROMPT = "You are Claude Code, Anthropic's official CLI for Claude.";
 const HISTORY_STORAGE_KEY = "api-verifier-history-v1";
 const HISTORY_LIMIT = 10;
 const SITE_URL = "https://www.hvoy.ai/";
@@ -253,20 +254,8 @@ async function sendProbe(options: {
   if (!endpoint) {
     throw new Error("API endpoint is empty");
   }
-  const endpointWithQuery =
-    mode === "anthropic"
-      ? `${endpoint}${endpoint.includes("?") ? "&" : "?"}beta=true`
-      : endpoint;
 
-  const buildAnthropicUserContent = (text: string) => [
-    { type: "text" as const, text: "null" },
-    { type: "text" as const, text: "null" },
-    {
-      type: "text" as const,
-      text,
-      cache_control: { type: "ephemeral" as const },
-    },
-  ];
+  const buildAnthropicUserContent = (text: string) => [{ type: "text" as const, text }];
 
   const anthropicMessages: Array<{
     role: "user" | "assistant";
@@ -299,19 +288,10 @@ async function sendProbe(options: {
           "content-type": "application/json",
           authorization: `Bearer ${options.apiKey}`,
           "anthropic-version": "2023-06-01",
-          "anthropic-beta": "claude-code-20250219,interleaved-thinking-2025-05-14",
+          "anthropic-beta": "oauth-2025-04-20,interleaved-thinking-2025-05-14",
           "anthropic-dangerous-direct-browser-access": "true",
-          "user-agent": "claude-cli/2.0.76 (external, cli)",
+          "user-agent": "claude-cli/2.1.76 (external, cli)",
           "x-app": "cli",
-          "x-stainless-arch": "x64",
-          "x-stainless-helper-method": "stream",
-          "x-stainless-lang": "js",
-          "x-stainless-os": "Windows",
-          "x-stainless-package-version": "0.70.0",
-          "x-stainless-retry-count": "0",
-          "x-stainless-runtime": "node",
-          "x-stainless-runtime-version": "v25.1.0",
-          "x-stainless-timeout": "600",
         }
       : {
           accept: "application/json",
@@ -330,12 +310,12 @@ async function sendProbe(options: {
           system: [
             {
               type: "text",
-              text: "null",
-              cache_control: { type: "ephemeral" },
+              text: OFFICIAL_CLAUDE_CODE_SYSTEM_PROMPT,
             },
           ],
           max_tokens: PROBE_MAX_TOKENS,
           stream: true,
+          tools: [],
           thinking: {
             type: "enabled",
             budget_tokens: PROBE_THINKING_BUDGET,
@@ -356,7 +336,7 @@ async function sendProbe(options: {
     body: JSON.stringify({
       stage: options.stage,
       mode,
-      endpoint: endpointWithQuery,
+      endpoint,
       method: "POST",
       headers,
       body,
