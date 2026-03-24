@@ -360,6 +360,40 @@ GPT5.4的价格是 人民币0.38/3 一百万Token. 感觉是不如Sonnet4.6值.
 
 新用户注册没有使用的额度, 最少一次要充值30人民币.
 
+### [神马AI](https://api.whatai.cc/register?aff=kjU5110733)
+
+这个站支持的模型特别多, 除了Gemini, Claude, GPT之外, 还有Minimax, Kimi这些都有.
+
+像对话,视频,绘画,音乐,ppt各种类型的模型都支持. 
+很大的一个站.
+
+Sonnet4.6逆向大概是人民币4.8/24 一百万Token, Opus4.6逆向大概是人民币8/40 一百万Token
+GPT5.4价格是人民币5/30一百万Token.
+
+新用户注册送0.2额度, 每天能签到
+
+微信客服回复速度挺快的, 支持开发票.
+
+### [V-API](https://api.gpt.ge/register?aff=BPl9)
+
+也是支持很多模型, 除了Gemini, Claude, GPT之外, 还有Minimax, Kimi这些都有.
+
+像对话,视频,绘画,音乐,ppt各种类型的模型都支持, 还支持数字人, 修图, OCR这些
+
+注册就立刻送了0.3美金，首充还会再减2RMB，充的多折扣也会相对大些；充值付款支持微信RMB.
+
+有qq 微信 tg客服，感觉响应都不是很及时
+
+### [MNAPI](https://www.mnapi.com/register?aff=awGu)
+
+大概是2025年初成立的一个站
+支持 Claude, Gemini, OpenAI, DeepSeek,Grok 等模型. 有按次收费的, 也有按Token收费的
+
+Claude三方逆向渠道价格是官网的0.4折，支持Claude code但不支持缓存；Claude官key价格是官网的5折
+
+有个TG用户交流群，客服回应速度慢
+
+新用户送1元的额度, 平台无最低充值门槛充1元也能充，感兴趣的可以小小的试试
 
 ## 不推荐的
 
