@@ -177,10 +177,7 @@ Opus4.6 的价格是人民币¥0.5/2.5 一百万Token.
 但是缺点是, 没有试用额度, 每次最少买35人民币.
 
 
-
-
-
-### [SparkCode](https://sparkcode.top/register)
+### [SparkCode](https://sparkcode.top/register?aff=EYOo)
 支持Claude, Gemini, GPT, Kimi, GLM. 常用的编程模型都支持了.
 
 Sonnet 4.6的价格是人民币3/15 一百万Token, Opus 4.6价格是5/25一百万Token. 试了下, 质量还行, 对得起价格吧.
