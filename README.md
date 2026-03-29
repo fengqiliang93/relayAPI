@@ -207,6 +207,21 @@ Gemini 3.1 Pro的价格是人民币2/12 一百万Token, 但是最近都没有资
 
 用户注册送2块钱, 可以去试试. 每次最少只用充1块钱.  有按月套餐, 89块钱可以买150的额度, 199买350的额度. 感觉不如少量现充合适
 
+
+### [Ekan8](https://sparkcode.top/register?aff=EYOo)
+支持Gemini和Claude
+
+Claude 只支持Opus4.6, 可以按次也可以按量.
+按量的Opus4.6 thinking 价格是人民币3.5/17.5一百万Token, 这个价格也不贵.
+按次的Opus4.6 价格是每次0.15人民币, 100万上下文.
+
+接口确实没掺水, 值得这个价格.
+
+Gemini3.1 Pro都是按次的, 每次4分钱.
+
+新用户注册送1元钱, 很适合玩酒馆的朋友.
+
+
 ### [Aiberm](https://aiberm.com/register?aff=mZPL)
 26年新作的一个API站点.
 这个站长也有很多项目, 做的都还不错.
