@@ -2,7 +2,7 @@
 
 随着龙虾火起来之后, 大家都需要购买API KEY. 但是API中转站水很深, 非常看站长的良心
 
-在国内想要安心的使用最先进的AI API 真是太难了. 国外的AI不仅价格贵, 而且经常被误杀, 很多时候都会误事.
+在国内想要安心的使用最先进的AI API 真是太难了. 国外的AI不仅价格贵, 而且经常被误封账号, 就会误事.
 
 选择一个好的中转站不容易, 要看下面的这些东西
 
@@ -417,7 +417,6 @@ GPT很便宜,  GPT5.4 是¥0.13(进)0.75(出)/一百万Token.
 
 有一个qq群, 不太活跃.
 
-
 ### [ZeroCode](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fzerocode.sbs%2Fregister%3Faff%3DSc3E&name=ZeroCode&source=git)
 ZeroCode 是2026年年初开的一个站. 支持Claude, Gemini, GPT.
 
@@ -557,14 +556,6 @@ Claude三方逆向渠道价格是官网的0.4折，支持Claude code但不支持
 
 缺点是价格比较贵, 很多情况下比原厂价格还要贵5%. 
 
-
-
-## 不推荐的
-
-### 闲鱼上的中转站
-试过好几个, 闲鱼上不知名中转站, 基本要不是模型掺水的特别厉害, 要不就是速度不达标, 太看运气了.
-
-
 ### [aicodemirror](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fwww.aicodemirror.com%2Fregister%3Finvitecode%3D7C06QL&name=aicodemirror&source=git)
 aicodemirror 是一个老牌的中转站, 之前使用的人很多
 目前支持Claude, GPT, Gemini 三种api. 
@@ -619,7 +610,6 @@ GPT5.4价格很贵, 人民币¥1.37(进)8.25(出)/一百万Token.
 
 新用户送0.5. 不支持月卡.
 
-
 ### [Duomi](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fduomi.uk%2Fhome&name=Duomi&source=git)
 是一个比较新的站点, 可能是2026年3月刚做的.
 
@@ -627,6 +617,8 @@ GPT5.4价格很贵, 人民币¥1.37(进)8.25(出)/一百万Token.
 价格方面也不便宜.
 
 可以考虑等稳定一点再使用
+
+好像已经倒闭了
 
 ### [接口AI](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fjiekou.ai%2F&name=%E6%8E%A5%E5%8F%A3AI&source=git)
 价格基本和官方差不多,甚至有一些接口比官方贵很多.
@@ -649,3 +641,10 @@ GPT5.4价格很贵, 人民币¥1.37(进)8.25(出)/一百万Token.
 按量的Opus4.6 价格是¥2.5(进)12.5(出)/一百万Token, 也是是掺水的.
 
 新用户注册送0.5人民币, 可以自己去感受下
+
+
+## 不推荐的
+
+### 闲鱼上的中转站
+试过好几个, 闲鱼上不知名中转站, 基本要不是模型掺水的特别厉害, 要不就是速度不达标, 太看运气了.
+
