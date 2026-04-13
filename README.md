@@ -409,17 +409,6 @@ GPT很便宜,  GPT5.4 是¥0.13(进)0.75(出)/一百万Token.
 
 有一个qq群, 不太活跃.
 
-###  [鸡哥API](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fapi.yousebaby.com%2Fregister%3Faff%3D0cJg&name=%E9%B8%A1%E5%93%A5API&source=git)
-这个网站在玩酒馆的朋友比较常见.
-
-支持Claude, Gemini, Grok,DeepSeek, Minimax(居然不支持GPT)
-
-Opus4.6 只能按次, 每次0.1人民币.
-Sonnet4.6 只能按次, 每次0.04人民币.  接口质量也挺好的, 我试起来是没有掺水的.
-
-Gemini3.1 也只能按次, 每次0.05人民币.
-
-这个网站还不错, 收费模式简单, 接口质量还不错.
 
 ### [ZeroCode](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fzerocode.sbs%2Fregister%3Faff%3DSc3E&name=ZeroCode&source=git)
 ZeroCode 是2026年年初开的一个站. 支持Claude, Gemini, GPT.
