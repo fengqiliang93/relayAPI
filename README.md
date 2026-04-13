@@ -4,7 +4,7 @@
 
 在国内想要安心的使用最先进的AI API 真是太难了. 国外的AI不仅价格贵, 而且经常被误封账号, 就会误事.
 
-选择一个好的中转站不容易, 要看下面的这些东西
+选择一个好的中转站不容易, 要看下面的这些点
 
 1. 最重要的是稳定，如果它自己经常宕机或延迟极高，那不仅没省事反而耽误事. 所以要优先买那些信誉好,运行时间长, 最好有群的站
 2  第二个是关注服务器节点位置。对于国内开发者，如果中转服务器在香港、新加坡, 就比在美国的站点好很多.
@@ -121,19 +121,7 @@ btw:这个站点的域名老容易打错.
 
 优点是新用户注册送4块钱的额度, 每天可以签到送一些额度. 很适合进行尝试, 感觉不错再充钱
 
-### [Ekan8](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fapi.ekan8.com%2Fregister%3Faff%3DfLYm&name=Ekan8&source=git)
-支持Gemini和Claude
 
-Claude 只支持Opus4.6, 可以按次也可以按量.
-按量的Opus4.6 thinking 还有100万上下文的Opus4.6 价格是人民币¥3.5(进)17.5(出)/一百万Token, 这个价格也还行.
-
-按次的Opus4.6 价格是每次0.15人民币, 100万上下文. 这个接口确实很少掺水, 值得这个价格. 
-
-这个站的接口质量是我测过的"酒馆"站里, 质量和价格比最高的.
-
-Gemini3.1 Pro都是按次的, 每次4分钱.
-
-新用户注册送1元钱, 推荐给玩酒馆的朋友.
 
 ### [米醋AI](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fwww.openclaudecode.cn%2Fregister%3Faff%3DrBFh&name=%E7%B1%B3%E9%86%8BAI&source=git)
 前身是OpenClaudeCode, 之前的风波里表现还挺好. 现在重新开张.
@@ -641,6 +629,20 @@ GPT5.4价格很贵, 人民币¥1.37(进)8.25(出)/一百万Token.
 按量的Opus4.6 价格是¥2.5(进)12.5(出)/一百万Token, 也是是掺水的.
 
 新用户注册送0.5人民币, 可以自己去感受下
+
+### [Ekan8](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fapi.ekan8.com%2Fregister%3Faff%3DfLYm&name=Ekan8&source=git)
+支持Gemini和Claude
+
+Claude 只支持Opus4.6, 可以按次也可以按量.
+按量的Opus4.6 thinking 还有100万上下文的Opus4.6 价格是人民币¥3.5(进)17.5(出)/一百万Token, 这个价格也还行.
+
+~按次的Opus4.6 价格是每次0.15人民币, 100万上下文. 这个接口确实很少掺水, 值得这个价格. ~
+
+2026-4-13更新: 最近接口质量不太行了
+
+这个站的接口质量是我测过的"酒馆"站里, 质量和价格比最高的.
+
+Gemini3.1 Pro都是按次的, 每次4分钱.
 
 
 ## 不推荐的
