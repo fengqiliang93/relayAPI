@@ -368,7 +368,7 @@ codex的GPT 5.4 是人民币¥0.5(进)3(出)/一百万Token.
 
 每天可以签到, 得到几分钱. 新用户可以冲个一块钱试试感觉怎么样.
 
-###  [DDSub](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fwww.ddshub.cc%2F&name=DDSub&source=git)
+###  [DDShub](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fwww.ddshub.cc%2F&name=DDShub&source=git)
 网站的名字很可爱, 叫呆呆兽. 2026年3月份开始的.
 
 网站只提供Claude Max的反代, 充值现在只能在QQ群里找站住充. 比例是 2人民币 : 1美元.
