@@ -85,6 +85,10 @@ GPT5.4 价格是人民币 14/84 一百万 Token.
 
 总体来说,这个适合企业客户, 质量好, 价格也在这里摆着.
 
+2026-04-17 更新: 他们新推退出了一个活动, 
+每个用户每天可以免费用一些反代出来的sonnet-4.6和gpt5.3.
+这个反代的价格相对亲民了很多.可以去试试.
+
 btw:这个站点的域名老容易打错.
 
 ### [柏拉图AI](https://www.hvoy.ai/relaySite?target=https%3A%2F%2Fapi.bltcy.ai%2Fregister&name=%E6%9F%8F%E6%8B%89%E5%9B%BEAI&source=git)
